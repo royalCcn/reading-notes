@@ -1,0 +1,52 @@
+git
+1.初始化仓库
+	git init   		
+	git init newrepo（指定目录作为git仓库）
+	git remote add origin git@github.com:yourName/yourRepo.git（还没有克隆现有仓库，并欲将你的仓库连接到某个远程服务器）
+2.添加文件（添加到缓存区）
+	git add filename
+	git add -i（交互式添加文件到暂存区）
+3.提交版本
+	git commit -m "提交版本注释信息"
+	git commit -a -m "提交版本注释信息"（a选项可将所有被修改或者已删除的且已经被git管理的文档提交到仓库中）
+4.发布版本
+	git clone ssh://example.com/~/www/project.git（先从服务器克隆一个库并上传）
+	git push ssh://example.com/~/www/project.git（修改之后可以进行推送到服务器）
+5.取回更新
+	git pull（当前分支自动与唯一一个追踪分支进行合并）
+	git pull http://git.example.com/project.git（从非默认位置更新到指定的url）
+6.删除文件
+	git rm file
+7.分支与合并（fetch/pull、merge）
+	创建一个新的分支
+		git branch test
+	切换分支
+		git checkout test
+		git checkout master
+	如果想将更改提交到主分支，则需切换回master分支，然后使用合并
+		git checkout master（换回master分支）
+		git merge test（合并）
+	删除分支
+		git branch -d test
+	推送分支到远程
+		git push origin <branch>
+	合并改动之前，你可以使用如下命令预览差异
+		git diff <source_branch> <target_branch>
+8.标签
+	创建一个叫做 1.0.0 的标签
+		git tag 1.0.0 1b2e1d63ff（1b2e1d63ff 是你想要标记的提交 ID 的前 10 位字符）
+	获取提交 ID
+		git log
+9.替换本地改动
+	git checkout -- <filename>（会使用 HEAD 中的最新内容替换掉你的工作目录中的文件。已添加到暂存区的改动以及新文件都不会受到影响）
+	丢弃你在本地的所有改动与提交，可以到服务器上获取最新的版本历史，并将你本地主分支指向它
+	git fetch origin
+	git reset --hard origin/master
+		
+工作流程
+	本地仓库由git维护的三棵“树”组成：
+		第一个是‘工作目录’（持有实际文件）
+		第二个是‘暂存区’（缓存区域，临时保存改动）git add
+		第三个是‘head’（最后一次提交的结果,但还没到你的远端仓库）git commit -m "代码提交信息"
+		第四个是‘推送改动’（将这些改动提交到远端仓库）git push origin master（可以把 master 换成你想要推送的任何分支）
+		
