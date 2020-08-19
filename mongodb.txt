@@ -1,24 +1,169 @@
 关系型数据库遵循ACID规则
 事务在英文中是transaction，和现实世界中的交易很类似，它有如下四个特性：
+	1、A (Atomicity) 原子性
+		原子性很容易理解，也就是说事务里的所有操作要么全部做完，要么都不做，事务成功的条件是事务里的所有操作都成功，只要有一个操作失败，整个事务就失败，需要回滚。
+		比如银行转账，从A账户转100元至B账户，分为两个步骤：1）从A账户取100元；2）存入100元至B账户。这两步要么一起完成，要么一起不完成，如果只完成第一步，第二步失败，钱会莫名其妙少了100元。
+	2、C (Consistency) 一致性
+		一致性也比较容易理解，也就是说数据库要一直处于一致的状态，事务的运行不会改变数据库原本的一致性约束。
+		例如现有完整性约束a+b=10，如果一个事务改变了a，那么必须得改变b，使得事务结束后依然满足a+b=10，否则事务失败。
+	3、I (Isolation) 独立性
+		所谓的独立性是指并发的事务之间不会互相影响，如果一个事务要访问的数据正在被另外一个事务修改，只要另外一个事务未提交，它所访问的数据就不受未提交事务的影响。
+		比如现在有个交易是从A账户转100元至B账户，在这个交易还未完成的情况下，如果此时B查询自己的账户，是看不到新增加的100元的。
+	4、D (Durability) 持久性
+		持久性是指一旦事务提交后，它所做的修改将会永久的保存在数据库上，即使出现宕机也不会丢失。
 
-1、A (Atomicity) 原子性
+CAP定理（CAP theorem）
+	在计算机科学中, CAP定理（CAP theorem）, 又被称作 布鲁尔定理（Brewer's theorem）, 它指出对于一个分布式计算系统来说，不可能同时满足以下三点:
+		一致性(Consistency) (所有节点在同一时间具有相同的数据)
+		可用性(Availability) (保证每个请求不管成功或者失败都有响应)
+		分隔容忍(Partition tolerance) (系统中任意信息的丢失或失败不会影响系统的继续运作)
+		
+	CAP理论的核心是：一个分布式系统不可能同时很好的满足一致性，可用性和分区容错性这三个需求，最多只能同时较好的满足两个。
 
-原子性很容易理解，也就是说事务里的所有操作要么全部做完，要么都不做，事务成功的条件是事务里的所有操作都成功，只要有一个操作失败，整个事务就失败，需要回滚。
+	因此，根据 CAP 原理将 NoSQL 数据库分成了满足 CA 原则、满足 CP 原则和满足 AP 原则三 大类：
+		CA - 单点集群，满足一致性，可用性的系统，通常在可扩展性上不太强大。
+		CP - 满足一致性，分区容忍性的系统，通常性能不是特别高。
+		AP - 满足可用性，分区容忍性的系统，通常可能对一致性要求低一些。
+		
+		
+mongodb概念解析
+	database	database	数据库
+	table		collection	数据库表/集合
+	row			document	数据记录行/文档
+	column		field		数据字段/域
+	index		index		索引
+	table 		joins	 	表连接,MongoDB不支持
+	primary key	primary key	主键,MongoDB自动将_id字段设置为主键
+	
+数据库也通过名字来标识。数据库名可以是满足以下条件的任意UTF-8字符串。
+	不能是空字符串（"")。
+	不得含有' '（空格)、.、$、/、\和\0 (空字符)。
+	应全部小写。
+	最多64字节。
+	
+MongoDB 创建数据库
+	use DATABASE_NAME
+MongoDB 删除数据库
+	db.dropDatabase()
+	
+/*相当于table*/	
+MongoDB 创建集合
+	db.createCollection(name, options)
+MongoDB 删除集合
+	db.collection.drop()
+	
+/*相当于行数据对象*/	
+MongoDB 插入文档
+	db.COLLECTION_NAME.insert(document)
+	或
+	db.COLLECTION_NAME.save(document)
+MongoDB 更新文档
+	db.collection.update(
+	   <query>,
+	   <update>,
+	   {
+		 upsert: <boolean>,
+		 multi: <boolean>,
+		 writeConcern: <document>
+	   }
+	)
+MongoDB 删除文档
+	db.collection.remove(
+	   <query>,
+	   <justOne>
+	)
+MongoDB 查询文档
+	db.collection.find(query, projection)
+	
+/*条件语句*/
+MongoDB 条件操作符
+	(>) 大于 - $gt
+	(<) 小于 - $lt
+	(>=) 大于等于 - $gte
+	(<= ) 小于等于 - $lte
+	
+/*数据类型*/
+MongoDB $type 操作符
+	类型	数字	备注
+	Double	1	 
+	String	2	 
+	Object	3	 
+	Array	4	 
+	Binary data	5	 
+	Undefined	6	已废弃。
+	Object id	7	 
+	Boolean	8	 
+	Date	9	 
+	Null	10	 
+	Regular Expression	11	 
+	JavaScript	13	 
+	Symbol	14	 
+	JavaScript (with scope)	15	 
+	32-bit integer	16	 
+	Timestamp	17	 
+	64-bit integer	18	 
+	Min key	255	Query with -1.
+	Max key	127	 
+	
+/*分页*/
+MongoDB Limit与Skip方法
+	db.COLLECTION_NAME.find().limit(NUMBER)
+	db.COLLECTION_NAME.find().limit(NUMBER).skip(NUMBER)
+	
+/*排序*/
+MongoDB 排序
+	db.COLLECTION_NAME.find().sort({KEY:1})
+	
+/*索引*/
+MongoDB 索引
+	db.collection.createIndex(keys, options)
+	
+/*聚合函数*/
+MongoDB 聚合
+	db.COLLECTION_NAME.aggregate(AGGREGATE_OPERATION)
+	
+/*数据同步*/
+MongoDB 复制（副本集）
+	MongoDB复制原理
+		mongodb的复制至少需要两个节点。其中一个是主节点，负责处理客户端请求，其余的都是从节点，负责复制主节点上的数据。
+		mongodb各个节点常见的搭配方式为：一主一从、一主多从。
+		主节点记录在其上的所有操作oplog，从节点定期轮询主节点获取这些操作，然后对自己的数据副本执行这些操作，从而保证从节点的数据与主节点一致。
 
-比如银行转账，从A账户转100元至B账户，分为两个步骤：1）从A账户取100元；2）存入100元至B账户。这两步要么一起完成，要么一起不完成，如果只完成第一步，第二步失败，钱会莫名其妙少了100元。
+	通过指定 --replSet 选项来启动mongoDB
+		mongod --port "PORT" --dbpath "YOUR_DB_DATA_PATH" --replSet "REPLICA_SET_INSTANCE_NAME"
+	启动一个新的副本集
+		rs.initiate()
+	查看副本集的配置
+		rs.conf()
+	查看副本集状态
+		rs.status()
+	副本集添加成员
+		rs.add(HOST_NAME:PORT)
+		rs.add("mongod1.net:27017")
 
-2、C (Consistency) 一致性
 
-一致性也比较容易理解，也就是说数据库要一直处于一致的状态，事务的运行不会改变数据库原本的一致性约束。
-
-例如现有完整性约束a+b=10，如果一个事务改变了a，那么必须得改变b，使得事务结束后依然满足a+b=10，否则事务失败。
-
-3、I (Isolation) 独立性
-
-所谓的独立性是指并发的事务之间不会互相影响，如果一个事务要访问的数据正在被另外一个事务修改，只要另外一个事务未提交，它所访问的数据就不受未提交事务的影响。
-
-比如现在有个交易是从A账户转100元至B账户，在这个交易还未完成的情况下，如果此时B查询自己的账户，是看不到新增加的100元的。
-
-4、D (Durability) 持久性
-
-持久性是指一旦事务提交后，它所做的修改将会永久的保存在数据库上，即使出现宕机也不会丢失。
+/*集群*/
+MongoDB 分片
+	三个主要组件：
+		Shard:
+			用于存储实际的数据块，实际生产环境中一个shard server角色可由几台机器组个一个replica set承担，防止主机单点故障
+		Config Server:
+			mongod实例，存储了整个 ClusterMetadata，其中包括 chunk信息。
+		Query Routers:
+			前端路由，客户端由此接入，且让整个集群看上去像单一数据库，前端应用可以透明使用
+		
+MongoDB 备份(mongodump)与恢复(mongorestore)
+	MongoDB数据备份
+		mongodump -h dbhost -d dbname -o dbdirectory
+	MongoDB数据恢复
+		mongorestore -h <hostname><:port> -d dbname <path>
+	
+MongoDB 监控
+	查看mongo的状态
+		mongostat 
+	跟踪一个MongoDB的实例，查看哪些大量的时间花费在读取和写入数据
+		mongotop 
+		
+		
+		
+		
