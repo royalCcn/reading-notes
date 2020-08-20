@@ -53,7 +53,16 @@ git
 	丢弃你在本地的所有改动与提交，可以到服务器上获取最新的版本历史，并将你本地主分支指向它
 	git fetch origin
 	git reset --hard origin/master
-		
+10.查看提交历史
+	git log
+	git log --oneline（--oneline查看历史记录的简洁的版本）	
+	git log --reverse --oneline（ --reverse 参数来逆向显示所有日志）
+	git log --author=royaCcn --oneline -5（查找指定用户的提交日志）
+11.删除远程仓库
+	git remote rm [别名]
+	例子：git remote git@github.com:tianqixin/runoob-git-test.git
+	
+	
 工作流程
 	本地仓库由git维护的三棵“树”组成：
 		第一个是‘工作目录’（持有实际文件）
