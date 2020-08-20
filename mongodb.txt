@@ -163,7 +163,200 @@ MongoDB 监控
 		mongostat 
 	跟踪一个MongoDB的实例，查看哪些大量的时间花费在读取和写入数据
 		mongotop 
+
+/*表关系*/	
+MongoDB 关系
+	MongoDB 的关系表示多个文档之间在逻辑上的相互联系。
+	文档间可以通过嵌入和引用来建立联系。
+
+	MongoDB 中的关系可以是：
+		1:1 (1对1)
+		1: N (1对多)
+		N: 1 (多对1)
+		N: N (多对多)
+	分类
+		嵌入式关系
+		引用式关系
+
+/*表关系*/		
+MongoDB 数据库引用
+	在不同的集合中 (address_home, address_office, address_mailing, 等)存储不同的地址的场景
+	使用 DBRefs
+		DBRef的形式：{ $ref : , $id : , $db :  }
 		
+		三个字段表示的意义为：
+			$ref：集合名称
+			$id：引用的id
+			$db:数据库名称，可选参数
+			
+		以下实例中用户数据文档使用了 DBRef, 字段 address：
+			{
+			   "_id":ObjectId("53402597d852426020000002"),
+			   "address": {
+			   "$ref": "address_home",
+			   "$id": ObjectId("534009e4d852427820000002"),
+			   "$db": "runoob"},
+			   "contact": "987654321",
+			   "dob": "01-01-1991",
+			   "name": "Tom Benzamin"
+			}
+
+/*索引查询分析*/		
+MongoDB 查询分析
+	可以确保我们所建立的索引是否有效
+	常用函数有：explain() 和 hint()
+	
+/*原子性（要么都成功，要么都失败）*/
+MongoDB 原子操作
+	多个事务的进行，比如删除修改一起执行
+
+/*高级索引*/	
+MongoDB 高级索引
+	索引数组字段
+		在数组中创建索引，需要对数组中的每个字段依次建立索引
+		db.users.find({tags:"cricket"})
+	索引子文档字段
+		db.users.ensureIndex({"address.city":1,"address.state":1,"address.pincode":1})
 		
+MongoDB 索引限制
+	额外开销
+		每个索引占据一定的存储空间，在进行插入，更新和删除操作时也需要对索引进行操作。所以，如果你很少对集合进行读取操作，建议不使用索引。
+
+	内存(RAM)使用
+		由于索引是存储在内存(RAM)中,你应该确保该索引的大小不超过内存的限制。
+		如果索引的大小大于内存的限制，MongoDB会删除一些索引，这将导致性能下降。
+
+	查询限制
+		索引不能被以下的查询使用：
+			正则表达式及非操作符，如 $nin, $not, 等。
+			算术运算符，如 $mod, 等。
+			$where 子句
+		所以，检测你的语句是否使用索引是一个好的习惯，可以用explain来查看。
+
+	索引键限制
+		从2.6版本开始，如果现有的索引字段的值超过索引键的限制，MongoDB中不会创建索引。
+
+	插入文档超过索引键限制
+		如果文档的索引字段值超过了索引键的限制，MongoDB不会将任何文档转换成索引的集合。与mongorestore和mongoimport工具类似。
+
+	最大范围
+		集合中索引不能超过64个
+		索引名的长度不能超过128个字符
+		一个复合索引最多可以有31个字段
+	
+/*ObjectId*/
+MongoDB ObjectId
+	ObjectId 是一个12字节 BSON 类型数据，有以下格式：
+		前4个字节表示时间戳
+		接下来的3个字节是机器标识码
+		紧接的两个字节由进程id组成（PID）
+		最后三个字节是随机数。
 		
+	创建新的ObjectId
+		使用以下代码生成新的ObjectId：
+		newObjectId = ObjectId()
+	创建文档的时间戳
+		由于 ObjectId 中存储了 4 个字节的时间戳，所以你不需要为你的文档保存时间戳字段，你可以通过 getTimestamp 函数来获取文档的创建时间:
+		ObjectId("5349b4ddd2781d08c09890f4").getTimestamp()
+		以上代码将返回 ISO 格式的文档创建时间：
+		ISODate("2014-04-12T21:49:17Z")	
 		
+/*处理大数据进行存储*/
+MongoDB Map Reduce
+	Map-Reduce是一种计算模型，简单的说就是将大批量的工作（数据）分解（MAP）执行，然后再将结果合并成最终结果（REDUCE）
+	
+	MapReduce 命令
+		以下是MapReduce的基本语法：
+		db.collection.mapReduce(
+		   function() {emit(key,value);},  //map 函数
+		   function(key,values) {return reduceFunction},   //reduce 函数
+		   {
+			  out: collection,
+			  query: document,
+			  sort: document,
+			  limit: number
+		   }
+		)
+		
+	使用 MapReduce 要实现两个函数 Map 函数和 Reduce 函数,Map 函数调用 emit(key, value), 遍历 collection 中所有的记录, 将 key 与 value 传递给 Reduce 函数进行处理。
+	Map 函数必须调用 emit(key, value) 返回键值对。
+
+	参数说明:
+		map ：映射函数 (生成键值对序列,作为 reduce 函数参数)。
+		reduce 统计函数，reduce函数的任务就是将key-values变成key-value，也就是把values数组变成一个单一的值value。。
+		out 统计结果存放集合 (不指定则使用临时集合,在客户端断开后自动删除)。
+		query 一个筛选条件，只有满足条件的文档才会调用map函数。（query。limit，sort可以随意组合）
+		sort 和limit结合的sort排序参数（也是在发往map函数前给文档排序），可以优化分组机制
+		limit 发往map函数的文档数量的上限（要是没有limit，单独使用sort的用处不大）
+	
+/*正则表达式*/
+MongoDB 正则表达式
+	正则表达式是使用单个字符串来描述、匹配一系列符合某个句法规则的字符串。
+	许多程序设计语言都支持利用正则表达式进行字符串操作。
+	MongoDB 使用 $regex 操作符来设置匹配字符串的正则表达式。
+	MongoDB使用PCRE (Perl Compatible Regular Expression) 作为正则表达式语言。
+	不同于全文检索，我们使用正则表达式不需要做任何配置。
+
+	使用正则表达式
+		以下命令使用正则表达式查找包含 runoob 字符串的文章：
+			db.posts.find({post_text:{$regex:"runoob"}})
+			以上查询也可以写为：
+			db.posts.find({post_text:/runoob/})
+
+/*分开存储大文件*/
+MongoDB GridFS
+	GridFS 用于存储和恢复那些超过16M（BSON文件限制）的文件(如：图片、音频、视频等)。
+	GridFS 也是文件存储的一种方式，但是它是存储在MonoDB的集合中。
+	GridFS 可以更好的存储大于16M的文件。
+	GridFS 会将大文件对象分割成多个小的chunk(文件片段),一般为256k/个,每个chunk将作为MongoDB的一个文档(document)被存储在chunks集合中。
+	GridFS 用两个集合来存储一个文件：fs.files与fs.chunks。
+	每个文件的实际内容被存在chunks(二进制数据)中,和文件有关的meta数据(filename,content_type,还有用户自定义的属性)将会被存在files集合中。
+
+	GridFS 添加文件
+		mongofiles.exe -d gridfs put song.mp3
+		db.fs.files.find()
+
+MongoDB 固定集合（Capped Collections）
+	MongoDB 固定集合（Capped Collections）是性能出色且有着固定大小的集合，对于大小固定，我们可以想象其就像一个环形队列，当集合空间用完后，再插入的元素就会覆盖最初始的头部的元素！
+
+	创建固定集合
+		我们通过createCollection来创建一个固定集合，且capped选项设置为true：
+		db.createCollection("cappedLogCollection",{capped:true,size:10000})
+		
+		还可以指定文档个数,加上max:1000属性：
+		db.createCollection("cappedLogCollection",{capped:true,size:10000,max:1000})
+		
+		判断集合是否为固定集合:
+		db.cappedLogCollection.isCapped()
+		
+		如果需要将已存在的集合转换为固定集合可以使用以下命令：
+		db.runCommand({"convertToCapped":"posts",size:10000})
+
+	固定集合查询
+		固定集合文档按照插入顺序储存的,默认情况下查询就是按照插入顺序返回的,也可以使用$natural调整返回顺序。
+		db.cappedLogCollection.find().sort({$natural:-1})
+
+/*id自动增长*/
+MongoDB 自动增长
+	思想：先创建集合存储需要自动增长的id的集合，然后写一个js函数进行计算id+1，最后在插入数据时，调用该函数
+	
+	创建 Javascript 函数
+		现在，我们创建函数 getNextSequenceValue 来作为序列名的输入， 指定的序列会自动增长 1 并返回最新序列值。在本文的实例中序列名为 productid 。
+		function getNextSequenceValue(sequenceName){
+		   var sequenceDocument = db.counters.findAndModify(
+			  {
+				 query:{_id: sequenceName },
+				 update: {$inc:{sequence_value:1}},
+				 "new":true
+			  });
+		   return sequenceDocument.sequence_value;
+		}
+		
+	使用 Javascript 函数
+		db.products.insert({
+	   "_id":getNextSequenceValue("productid"),
+	   "product_name":"Apple iPhone",
+	   "category":"mobiles"})
+	
+	
+	
