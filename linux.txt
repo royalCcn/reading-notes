@@ -286,22 +286,219 @@ linux yum 命令
 			yum clean headers: 清除缓存目录下的 headers
 			yum clean oldheaders: 清除缓存目录下旧的 headers
 			yum clean, yum clean all (= yum clean packages; yum clean oldheaders) :清除缓存目录下的软件包及旧的headers
+	yum包的查询指令
+		基本语法：
+			yum list[ installed]|grep xx
+			功能描述：查询YUM服务器上的[已经安装到本地的]软件包
+		例子：
+			yum list | grep firefox
+
+linux rpm 命令	
+	1.RPM介绍
+		一种用于互联网下载包的打包及安装工具，它包含在某些Linux分发版中。它生成具有.RPM扩展名的文件。RPM是RedHat Package Manager（RedHat软件包管理工具）的缩写，类似windows的setup.exe，这一文件格式名称虽然打上了RedHat的标志，但理念是通用的。Linux的分发版本都有采用（suse,redhat, centos等等），可以算是公认的行业标准了。
+	2.RPM包的查询指令 
+		基本语法：
+			rpm –qa :查询所安装的所有软件包
+			rpm –qa|more：分页查询所安装的所有软件包
+			rmp –qa|grep xxx：过滤查询安装的指定软件包
+		例子：
+			rmp –qa|grep firefox（查询所安装的firefox软件包）
+	3.RPM包的卸载指令
+		基本语法：
+			rpm –e 选项 软件包名称
+			选项说明：
+				--nodeps 表示强制删除，用于被删除的软件包有依赖的情况
+		例子：
+			rmp -e firefox
+	4.RPM包的安装指令
+		基本语法：
+			rpm 选项 RPM包全路径名
+			选项说明：
+				-i=install 安装
+				-v=verbose 提示
+				-h=hash 进度条
+		例子：
+			rpm -ivh xxxxx.rpm
+
+/*帮助指令*/
+linux 帮助命令	
+	1.man [命令或配置文件]
+		功能描述：获得帮助手册上的信息
+		例子：
+			man ls（查看命令ls的用法）
+	2.help [命令]
+		功能描述：获得命令内置的帮助信息
+		例子：
+			help cd（查看命令cd的用法）
+	
+linux 时间日期命令
+	1.date命令
+		1.date（功能描述：显示当前时间）
+		2.date +%Y（功能描述：显示当前年份）
+		3.date +%m（功能描述：显示当前月份）
+		4.date +%d（功能描述：显示当前是哪一天）
+		5.date "+%Y-%m-%d %H:%M:%S"（功能描述：显示年月日时分秒）
+		6.date -s 字符串时间（功能描述：设置日期）
+	2.cal命令
+		cal [选项]（功能描述：不加选项，显示本月日历）
+	
+
+linux 搜索查找指令
+	1.find指令
+		find指令将从指定目录向下递归地遍历其各个子目录，将满足条件的文件或者目录显示在终端。
+		基本语法：
+			find [搜索范围] [选项]
+				选项说明：
+					-name:按名称查找，支持通配符。
+					-user:按用户名查找
+					-size:按文件大小查找
+	2.locate指令
+		基本语法：
+			locate 要搜索的文件名
+			说明：locate指令可以快速在整个系统中定位文件路径。locate指令利用事先建立的系统中所有文件名称及路径的locate数据库实现快速定位给定的文件。locate指令无需遍历整个文件系统，查询速度较快。为了保证查询结果的准确度，管理员必须定期更新locate时刻。
+		例子：
+			updatedb
+				更新locate数据库
+			locate nan.txt
+	3.grep指令
+		基本语法：
+			grep [选项] 查找的源文件内容
+			常用选项：
+				-n：显示匹配行和行号
+				-i：忽略大小写
+				说明：grep 过滤查找，管道符，“|”，表示将前一个命令的处理结果输出传递给后面的命令处理。
+			例子：
+				cat /home/nan.txt | grep nan(查找nan.txt文件中的nan)
+
+/*解压缩*/
+linux 压缩和解压缩指令
+	1.gzip指令
+		基本语法:
+			gzip 文件
+			功能说明：压缩文件，将文件压缩为*.gz文件存放在原文件所在目录，压缩成功后会把原文件删除。用于压缩单个文件。
+		例子：
+			gzip /home/nan.txt
+	2.gunzip指令
+		基本语法：
+			gunzip 文件
+			功能说明：解压缩文件命令，解压成功后存放在原压缩文件所在目录，并且把原压缩文件删除。
+		例子：
+			gunzip /home/nan.txt.gz
+	3.zip指令
+		基本语法：
+			zip [选项] XXX.zip 将要压缩的内容
+			功能描述：将是指定文件或目录压缩成XXX.zip文件，用于压缩所有文件结构。
+				选项说明：
+					-r：递归压缩，即压缩目录
+		例子：
+			zip -r nan.zip /home
+				递归压缩home目录下的文件为nan.zip
+	4.unzip指令
+		基本语法：
+			unzip [选项] XXX.zip 
+		常用选项：
+			-d 目录：指定解压后文件的存放目录
+		例子：
+			unzip nan.zip -d /home
+	5.tar指令
+		基本语法：
+			tar [选项] XXX.tar.gz [打包的内容]
+		功能描述：打包或者解压文件 
+			选项说明：
+				-c：产生.tar.gz打包文件
+				-v：显示详细信息
+				-f：指定压缩后的文件名
+				-z：打包同时压缩
+				-x：解压.tar.gz文件
+				-C: 指定到哪个目录
+		例子：
+			1.打包aa.txt文件为nan.tar.gz
+				tar -czvf nan.tar.gz aa.txt
+			2.解压文件
+				tar -xzvf nan.tar.gz
+
+/*进程*/
+linux 进程管理
+	1.进程介绍
+		在Linux中，每个执行的程序（代码）都称为一个进程。每一个进程都分配一个ID号。每一个进程，都会对应一个父进程。
+		进程有两种运行方式：前台和后台。前台方式是目前用户可以在前台操作的，后台方式是实际在运行，但用户在前台看不见。
+		一般系统的服务都是以后台进程的方式存在，而且都会常驻在系统中。直到关机才结束。
+	2.查看系统运行的进程
+		基本语法：
+			ps 参数
+				参数说明：
+					ps –a:显示当前终端下的所有进程信息
+					ps –u:以用户的格式显示进程信息
+					ps –x:显示后台进程运行的参数
+					ps –e:显示所有进程信息
+					ps –f:以全格式显示进程信息
+	3.终止进程
+		基本语法：
+			kill 选项 进程ID
+			killall 进程名称(支持通配符)
+			选项说明：
+				-9:表示强迫进程立即停止。
+
+/*服务*/	
+linux 服务管理	
+	1.服务介绍
+		服务是支持Linux运行的一些必要程序，本质上也是进程，叫守护进程。守护进程通常默默地运行在后台，为应用程序提供必要支撑，比如sshd、防火墙等。
+	2.服务管理指令
+		基本语法：
+			systemctl [start、stop、restart、reload、status、enable] 服务名称
+		CentOS7之前，使用命令service 服务名称  [start、stop、restart、reload、status、enable]
+		功能描述：开启、关闭、重启、重新加载、查看服务状态、开机启动
+		例子：
+			systemctl reload firewalld
+	3.查看网路服务(了解)
+		netstat命令查看系统网络服务情况
+		基本语法：
+			netstat 选项
+			选项说明：
+				-an 按一定顺序排列输出
+				-p 显示哪个进程在调用
+		例子：
+			netstat -anp | grep sshd
+	4.ping命令
+		基本语法：
+			ping 选项 目标主机
+			功能描述：是一种网络检测工具，它主要是用检测远程主机是否正常，或是两部主机间的介质是否为断、网线是否脱落或网卡故障。
+		例子：
+			ping www.baidu.com
+	5.curl命令(了解)
+		基本语法：
+			curl 选项 url
+			功能描述：用来发送HTTP请求。
+				-X参数：指定请求方式
+				-v参数：显示响应结果
+				-u参数：携带用户名/密码
+				-H参数：携带请求消息头信息
+		例子：
+			curl -X -v http://www.baidu.com
+
+/**/
 
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	
