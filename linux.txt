@@ -186,6 +186,12 @@ Linux 磁盘管理
 		mkfs：磁盘格式化
 			选项与参数：
 				-t ：可以接文件系统格式，例如 ext3, ext2, vfat 等(系统有支持才会生效)	
+			例子：
+				mkfs -t ext3 /dev/hdc6
+				将分区 /dev/hdc6（可指定你自己的分区） 格式化为 ext3 文件系统
+			例子：	
+				mkfs[tab][tab]
+				查看 mkfs 支持的文件格式，按下两个[tab]，会发现 mkfs 支持的文件格式
 		fsck：磁盘检验
 			选项与参数：
 				-t : 给定档案系统的型式，若在 /etc/fstab 中已有定义或 kernel 本身已支援的则不需加上此参数
@@ -199,16 +205,25 @@ Linux 磁盘管理
 				-a : 如果检查有错则自动修复
 				-r : 如果检查有错则由使用者回答是否修复
 				-y : 选项指定检测每个文件是自动输入yes，在不确定那些是不正常的时候，可以执行 # fsck -y 全部检查修复。	
+			例子：
+				fsck[tab][tab]
+				查看系统有多少文件系统支持的 fsck 命令
 		mount：磁盘挂载与卸除
-			磁盘挂载语法：
+			1.磁盘挂载语法：
 				mount [-t 文件系统] [-L Label名] [-o 额外选项] [-n]  装置文件名  挂载点
-	
-		磁盘卸载命令 umount 语法：
-			umount [-fn] 装置文件名或挂载点
-			选项与参数：
-				-f ：强制卸除！可用在类似网络文件系统 (NFS) 无法读取到的情况下；
-				-n ：不升级 /etc/mtab 情况下卸除。
-
+				例子：
+					刚刚创建的 /dev/hdc6 挂载到 /mnt/hdc6 上面
+						mkdir /mnt/hdc6
+						mount /dev/hdc6 /mnt/hdc6
+						df
+			2.磁盘卸载命令 umount 语法：
+				umount [-fn] 装置文件名或挂载点
+				选项与参数：
+					-f ：强制卸除！可用在类似网络文件系统 (NFS) 无法读取到的情况下；
+					-n ：不升级 /etc/mtab 情况下卸除。
+				例子：
+					umount /dev/hdc6 
+					
 /*文本编辑器*/
 Linux vi/vim
 	1.vim 键盘图
