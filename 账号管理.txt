@@ -1,8 +1,24 @@
 gitHub
 账号：royalCcn
 密码：8691876aa
-电子邮箱： 765556935@qq.com
+电子邮箱：765556935@qq.com
 
 虚拟机Centos
 账号：root
 密码：8691876aa
+
+柚客APP、柚客PC：
+账号：baj
+密码：Sks12345
+
+DMS-PC：
+账号：SH02120569
+密码：sks12345
+
+sks_office网络：
+账号：yangbh
+密码：Yang0706
+
+软考：
+账号：15913435292
+密码：Aa8691876
