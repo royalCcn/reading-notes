@@ -1,0 +1,27 @@
+解决端口冲突：
+1.查找被占用端口命令
+	netstat -ano  或者  netstat -aon|findstr "8181"
+2.然后记下最后一位数字，即PID    10368
+3.继续输入tasklist|findstr "10368"，回车，查看是哪个进程或者程序占用了10368端口
+4.taskkill /f /t /im Tencentdl.exe结束相关进程
+
+
+
+
+两个long的自我判断
+dms二次编辑保存（dms删除一样的问题）    id返回的是不是就是一个id（不然我要先查再更新）
+dms和yk的产品的goodid商品名称（dms编辑的产品拿的事dms的  与  yk的拿的产品不一样  goodid）
+dms产品的字段保存、字段同步到yk（单价、数量、总价、价格优惠）   
+dms    price、count、real_price、
+yk+dms     编辑保存时+同步时，都是new的
+
+
+
+而是要确定订单服务成本,并且之后在dms也不可再编辑此订单了      前面不是说过用isConfirm这个字段么（订单确认就前段隐藏好了）
+yk删除+同步删除
+yk详情没有返回产品的默认规格、产品id不一致（查看原先写的是一样的返回没问题）
+
+
+
+type    保存、同步、详情
+

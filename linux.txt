@@ -475,11 +475,27 @@ linux 服务管理
 				-H参数：携带请求消息头信息
 		例子：
 			curl -X -v http://www.baidu.com
+			
+/*xShell远程连接Linux*/
+	步骤：
+		1.检查Linux虚拟机的网络连接模式，确保它是NAT模式
+		2.在VMware workstation里，点击菜单栏上的【编辑】-->【虚拟网络编辑器】，打开下方的虚拟网络编辑器。选择VMnet8（NAT模式），取消勾选【使用本地DHCP服务...】（若勾选，会设置动态IP）
+			注：上图中192.168.44.2为网关地址，192.168.44.255为广播地址，192.168.44.0一般为网段IP，所以0,2,255这三个地址不能设置。
+		3.设置虚拟机的IP、DNS和主机名
+			设置IP地址、子网掩码和网关
+				#vi /etc/sysconfig/network-scripts/ifcfg-ens* （*根据实际情况不同，本文为ens33）	
+				BOOTPROTO=static
+				IPADDR=192.168.253.30
+				NETMASK=255.255.255.0
+				GATEWAY=192.168.253.2
+				ONBOOT=yes
+		4.上述文件配置成功后，重启虚拟机#reboot或使用service network restart命令重启网卡。
+		5.使用xShell连接
+		6.小插曲：vim和ifconfig命令找不到时，使用yum install net-tools/vim安装即可。
+			#yum install -y net-tools
+			#yum install -y vim
 
-/**/
-
-
-
+/*文件传输*/
 
 
 
