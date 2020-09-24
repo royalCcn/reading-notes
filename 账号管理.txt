@@ -3,7 +3,7 @@ gitHub
 密码：8691876aa
 电子邮箱：765556935@qq.com
 
-虚拟机Centos
+虚拟机Centos（自己）
 账号：root
 密码：8691876aa
 
@@ -11,9 +11,16 @@ gitHub
 账号：15913435292
 密码：Aa8691876
 
-柚客APP、柚客PC：
+旧柚客APP、柚客PC：
 账号：baj
 密码：Sks12345
+
+新柚客APP、柚客PC：
+账号：SH02120569
+密码：Sks12345
+
+账号：15921290663
+密码：sks123456
 
 新的DMS-PC：
 账号：SH02120569
@@ -36,6 +43,10 @@ sks_office网络：
 账号：chenchunan@u-need.cn
 密码：8691876Aa
 
+优尼移动管理平台：
+账号：15913435292
+密码：123456
+
 gitlab.com(source tree)：
 账号：765556935@qq.com
 密码：8691876aa
@@ -54,7 +65,6 @@ u-need平台阿里云项目
 
 账号：h_cs
 密码：huang_chaosheng
-
 接着在阿里云的个人中心配置本地ssh
 
 

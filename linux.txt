@@ -494,6 +494,7 @@ linux 服务管理
 		6.小插曲：vim和ifconfig命令找不到时，使用yum install net-tools/vim安装即可。
 			#yum install -y net-tools
 			#yum install -y vim
+	或者在安装CentOS的时候就设置好net的ip进行xShell安装
 
 /*文件传输*/
 
