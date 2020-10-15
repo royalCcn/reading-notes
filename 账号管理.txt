@@ -11,6 +11,17 @@ gitHub
 账号：15913435292
 密码：Aa8691876
 
+
+三棵树dms + yk代码sourcetree：
+账号：youni-huangchaosheng
+密码：huangchaosheng
+
+
+postman：
+账号：765556935@qq.com
+密码：8691876aa
+
+
 旧柚客APP、柚客PC：
 账号：baj
 密码：Sks12345
@@ -38,6 +49,10 @@ sks_office网络：
 地址：https://120.33.203.190:8443/
 账号：youni6
 密码：youni60416
+
+账号：youni2
+密码：youni0413
+
 
 优尼企业邮箱：
 账号：chenchunan@u-need.cn
@@ -86,3 +101,30 @@ E-mail：765556935@qq.com
 个人社保
 账号：China_Ccn
 密码：chen5292A
+
+电脑微软microsoft
+账号：15913435292
+密码：8691876aa
+E-mail：765556935@qq.com
+E-mail：chenchunan8691876@outlook.com
+
+四级
+账号：15913435292
+密码：8691876aa!
+E-mail：765556935@qq.com
+
+navicat
+账号：ccn
+密码：8691876Aa
+E-mail：765556935@qq.com
+
+本地mysql
+账号：root
+密码：123456
+
+
+
+
+
+
+

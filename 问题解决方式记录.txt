@@ -8,5 +8,10 @@
 
 	
 	
-	
+Row: 226500, 65521, 1716311, null, sk-mfj16+三棵树美缝剂（浅蓝色）+410g*36/件, null, 400ML*36/件, null, 1, 2020-09-29 19:25:11.0, 130005, null, null, 0, null, null, null, null, null, null, 0, null, null, null, null, null, null, null, null, null, null
+Row: 226501, 65521, 1695973, null, sk-mfj06+三棵树美缝剂（闪亮银）+410g*36/件, null, 400ML*36/件, null, 1, 2020-09-29 19:25:11.0, 130005, null, null, 0, null, null, null, null, null, null, 0, null, null, null, null, null, null, null, null, null, null
+
  
+
+ 
+ 地区表数据的简称、经纬度
