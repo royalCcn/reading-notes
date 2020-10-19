@@ -130,10 +130,14 @@
 				系统读取存放在nacos的sentinel的配置文件加载规则到内存，sentinel展示系统读取的nacos规则
 		5.gateway整合sentinel实现限流
 		6.服务降级
+			先熔断，再降级
 			策略
 				1.rt（平均响应时间）
 				2.错误比例
 				3.错误次数
+		7.基于sentinel实现热词限流
+			
+				
 	
 	
 	
